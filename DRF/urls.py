@@ -18,4 +18,5 @@ from django.urls import path, include
 from duty import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('web/', include('duty.urls')),
 ]
