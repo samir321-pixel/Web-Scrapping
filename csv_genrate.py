@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import requests
 
 
-
 def genrate_CSV():
     url = "https://www.croma.com/televisions-accessories/led-tvs/4k-ultra-hd-tvs/c/999"
     response = requests.get(url)
@@ -15,8 +14,8 @@ def genrate_CSV():
     for index, item in enumerate(results):
         title = item.find('h3', {'class': 'product-title plp-prod-title'}).text.strip()
         brand = title.split()[0]
-        mrp = item.find('span', {'class': 'amount'}).text.strip().replace(',', '')
-        old_price = item.find('span', {'class': 'old-price'}).text.strip().replace(',', '')
+        mrp = item.find('span', {'class': 'amount'}).text.strip().replace('₹', '').replace(',', '')
+        old_price = item.find('span', {'class': 'old-price'}).text.strip().replace('₹', '').replace(',', '')
         # product_url = item.find('a', {'class': 'product-title plp-prod-title'}).get('href')
         # image_url = item.find('img', {'class': 'product-img plp-card-thumbnail'}).get('src').strip()
         # print(image_url)
@@ -34,17 +33,15 @@ def genrate_CSV():
         })
 
     if len(data) > 0:
-        print('check me')
         with open('croma_products.csv', mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=data[0].keys())
             writer.writeheader()
             for d in data:
                 writer.writerow(d)
-        writer.writeheader()
-        for d in data:
-            writer.writerow(d)
+        # Open the file and read its contents
+        with open('croma_products.csv', mode='r', encoding='utf-8') as file:
+            file_content = file.read()
     else:
-        print('this')
-
+        print("File closed")
 
 genrate_CSV()
