@@ -34,6 +34,8 @@ def exex():
     products = load_products()
     while True:
         search_terms = input("Enter search terms: ").split()
+        if search_terms[0].lower() == 'stop':
+            break
         if not search_terms:
             break
         by_position, by_price_low = search_products(products, search_terms)
